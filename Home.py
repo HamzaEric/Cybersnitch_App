@@ -8,6 +8,8 @@ import warnings
 warnings.filterwarnings('ignore')
 import time
 
+ st.set_page_config(layout='wide')
+
 def normalize_url(url):
     # Lowercase and strip 'www.' from the domain part
     url = url.lower()
@@ -55,8 +57,8 @@ def extract_features(url):
     return features
 
 
-def main():
-    st.set_page_config(layout='wide')
+
+   
     st.title('CyberSnitch')
     st.markdown('---')
 
@@ -64,10 +66,10 @@ def main():
     with col1:
         st.image('cybersnitch.jpeg', width=600)
     with col2:
-        st.markdown("<h3 style='font-size: 70px;margin-top:15px;'> A Web app designed to detect phishing websites using machine learning techniques </h3 >", unsafe_allow_html=True)
+        st.markdown(" A Web app designed to detect phishing websites using machine learning techniques </h3 >", unsafe_allow_html=True)
         st.markdown('---')
-        st.markdown("<h10 style='font-size: 70px;'> 1. Multilayer Perceptron </h10 >", unsafe_allow_html=True)
-        st.markdown("<h10 style='font-size: 70px;'> 2. XGBoost Classifier </h10 >", unsafe_allow_html=True)
+        st.markdown(" 1. Multilayer Perceptron ")
+        st.markdown(" 2. XGBoost Classifier ")
 
     st.markdown('---')
     st.code('Its a combination of two fields i.e. Cybersecurity and Data Science aiming to protect users from cyber threats using machine learning')
@@ -164,5 +166,4 @@ def main():
                            "    cybersnitch community or PhishTank to inform other users to stay safe online")
 
 
-if __name__ == '__main__':
-    main()
+
