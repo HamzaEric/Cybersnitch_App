@@ -8,7 +8,7 @@ import warnings
 warnings.filterwarnings('ignore')
 import time
 
- st.set_page_config(layout='wide')
+st.set_page_config(layout='wide')
 
 def normalize_url(url):
     # Lowercase and strip 'www.' from the domain part
