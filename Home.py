@@ -84,7 +84,7 @@ st.write('''
     ''')
 st.subheader(' How user-friendliness is implemented')
 st.info('''
-    ### The App is designed with simplicity as you cannot tell a user who has no knowledge of websites to input whether the website has an Iframe,DNS record,right-click disabled to hide page source,Mouse Over Method,Webtraffic Or Domain_Age
+    ###### The App is designed with simplicity as you cannot tell a user who has no knowledge of websites to input whether the website has an Iframe,DNS record,right-click disabled to hide page source,Mouse Over Method,Webtraffic Or Domain_Age
     ''')
 html_file = Path('Retraining_For_UI.html')
 components.html(html_file.read_text(encoding='utf-8', errors='replace'), height=1000, scrolling=True)
@@ -116,9 +116,7 @@ col1, col2 = st.columns([1, 2])
 with col1:
     st.image('urlscanner.jpeg', width=600)
 with col2:
-    st.markdown(
-        "<h3 style='font-size: 70px;margin-top:15px;'> CyberSnitch URL Scanner </h3 >",
-        unsafe_allow_html=True)
+    st.markdown("##### CyberSnitch URL Scanner")
 
     st.code('A Digital Watchdog against phishing threats')
 
