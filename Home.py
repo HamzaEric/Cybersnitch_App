@@ -56,114 +56,113 @@ def extract_features(url):
 
     return features
 
+st.title('CyberSnitch')
+st.markdown('---')
 
+col1, col2 = st.columns([1, 2])
+with col1:
+    st.image('cybersnitch.jpeg', width=600)
+with col2:
+    st.markdown(" A Web app designed to detect phishing websites using machine learning techniques </h3 >",
+                unsafe_allow_html=True)
+    st.markdown('---')
+    st.markdown(" 1. Multilayer Perceptron ")
+    st.markdown(" 2. XGBoost Classifier ")
 
-   
-    st.title('CyberSnitch')
-    st.markdown('---')
+st.markdown('---')
+st.code(
+    'Its a combination of two fields i.e. Cybersecurity and Data Science aiming to protect users from cyber threats using machine learning')
+st.markdown('---')
 
-    col1,col2 = st.columns([1, 2])
-    with col1:
-        st.image('cybersnitch.jpeg', width=600)
-    with col2:
-        st.markdown(" A Web app designed to detect phishing websites using machine learning techniques </h3 >", unsafe_allow_html=True)
-        st.markdown('---')
-        st.markdown(" 1. Multilayer Perceptron ")
-        st.markdown(" 2. XGBoost Classifier ")
+st.subheader('A User-Centric Approach And Retraining For User-friendliness')
+st.markdown('---')
 
-    st.markdown('---')
-    st.code('Its a combination of two fields i.e. Cybersecurity and Data Science aiming to protect users from cyber threats using machine learning')
-    st.markdown('---')
-    st.header('Introduction')
-    st.markdown('---')
-    st.write('''
-     This project focuses on phishing website detection, leveraging machine learning techniques to identify malicious websites based on various features and behavioral patterns.
-    The system analyzes elements such as URL structure and domain age to distinguish phishing sites from legitimate ones.
-    By training the model on a labeled dataset of phishing and legitimate websites, the project aims to build a predictive model that can accurately classify unknown sites in real-time.
-    ''')
-    st.markdown('---')
-    st.header('A User-Centric Approach And Retraining For User-friendliness')
-    st.markdown('---')
-
-    st.write('''
+st.write('''
      This app has been carefully designed with user-friendliness in mind.
      Whether you're a regular user or someone with web development experience, the interface
      is intuitive and requires only a simple URL input — no complex forms, no external API requirements.
     ''')
-    st.write('## How user-friendliness is implemented')
-    st.info('''
+st.subheader(' How user-friendliness is implemented')
+st.info('''
     ### The App is designed with simplicity as you cannot tell a user who has no knowledge of websites to input whether the website has an Iframe,DNS record,right-click disabled to hide page source,Mouse Over Method,Webtraffic Or Domain_Age
     ''')
-    html_file = Path('Retraining_For_UI.html')
-    components.html(html_file.read_text(encoding='utf-8', errors='replace'), height=1000, scrolling=True)
+html_file = Path('Retraining_For_UI.html')
+components.html(html_file.read_text(encoding='utf-8', errors='replace'), height=1000, scrolling=True)
 
-    st.markdown('---')
+st.markdown('---')
 
-    with st.sidebar:
-        st.caption("CyberSnitch URL Scanner Status")
-        st.success("✅ Operational")
+with st.sidebar:
+    st.caption("CyberSnitch URL Scanner Status")
+    st.success("✅ Operational")
 
-    # Model selection
-    selected_model = st.radio("## Choose a Machine Learning Model", ["XGBoostClassifier(Supervised Machine Learning Model)", "MLPClassifier(Deep Learning Model)"])
-    if selected_model=='XGBoostClassifier(Supervised Machine Learning Model)':
-     st.success('XGBoost Model Loaded successfully')
+# Model selection
+selected_model = st.radio("Choose a Machine Learning Model",
+                          ["XGBoostClassifier(Ensemble Machine Learning Model)",
+                           "MLPClassifier(Deep Learning Model)"])
+if selected_model == 'XGBoostClassifier(Supervised Machine Learning Model)':
+    st.success('XGBoost Model Loaded successfully')
+else:
+    st.success('MLP Model Loaded successfully')
+
+# Load models
+with open('MLPClassifier.pickle.dat', 'rb') as file:
+    mlp_model = pickle.load(file)
+
+with open('XGBoostClassifier.pickle.dat', 'rb') as file:
+    xgb_model = pickle.load(file)
+
+# User input
+col1, col2 = st.columns([1, 2])
+with col1:
+    st.image('urlscanner.jpeg', width=600)
+with col2:
+    st.markdown(
+        "<h3 style='font-size: 70px;margin-top:15px;'> CyberSnitch URL Scanner </h3 >",
+        unsafe_allow_html=True)
+
+    st.code('A Digital Watchdog against phishing threats')
+
+url_input = st.text_input("Enter the website URL:")
+if st.button("Detect"):
+    if not url_input:
+        st.warning("Please enter a URL.")
     else:
-     st.success('MLP Model Loaded successfully')
+        with st.spinner("Analyzing URL features..."):
+            time.sleep(1)  # Simulate processing
 
-    # Load models
-    with open('MLPClassifier.pickle.dat', 'rb') as file:
-        mlp_model = pickle.load(file)
-
-    with open('XGBoostClassifier.pickle.dat', 'rb') as file:
-        xgb_model = pickle.load(file)
-
-    # User input
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        st.image('urlscanner.jpeg', width=600)
-    with col2:
-        st.markdown(
-            "<h3 style='font-size: 70px;margin-top:15px;'> CyberSnitch URL Scanner </h3 >",
-            unsafe_allow_html=True)
-
-        st.code('A Digital Watchdog against phishing threats')
-
-    url_input = st.text_input("Enter the website URL:")
-    if st.button("Detect"):
-        if not url_input:
-            st.warning("Please enter a URL.")
+        if url_input.startswith("http://"):
+            prediction = 1  # Force as phishing
+            explanation = "The URL starts with 'http://' which is a common trait in phishing websites and if legit it is not secure since its not encrypted"
         else:
-            with st.spinner("Analyzing URL features..."):
-             time.sleep(1)  # Simulate processing
+            # Extract features and run through the model
+            normalized_url = normalize_url(url_input)
+            input_features = np.array(extract_features(normalized_url)).reshape(1, -1)
 
-            if url_input.startswith("http://"):
-                prediction = 1  # Force as phishing
-                explanation = "The URL starts with 'http://' which is a common trait in phishing websites and if legit it is not secure since its not encrypted"
-            else:
-                # Extract features and run through the model
-                normalized_url = normalize_url(url_input)
-                input_features = np.array(extract_features(normalized_url)).reshape(1, -1)
+            model = xgb_model if selected_model == "XGBoost" else mlp_model
+            prediction = int(model.predict(input_features)[0])
+            explanation = "Prediction based on machine learning model analysis of the URL's structure."
 
-                model = xgb_model if selected_model == "XGBoost" else mlp_model
-                prediction = int(model.predict(input_features)[0])
-                explanation = "Prediction based on machine learning model analysis of the URL's structure."
-
-            result = "🔒 Legitimate" if prediction == 0 else "⚠️ Phishing"
-            st.subheader(f"Prediction: {result}")
-            st.info(f"Reason: {explanation}")
-            if prediction == 0:
-                st.info(
-                    "✅ This website appears to be **legitimate** based on the analyzed features. You can proceed safely, but always stay alert online.")
-                st.info('''
+        result = "🔒 Legitimate" if prediction == 0 else "⚠️ Phishing"
+        st.subheader(f"Prediction: {result}")
+        st.info(f"Reason: {explanation}")
+        if prediction == 0:
+            st.info(
+                "✅ This website appears to be **legitimate** based on the analyzed features. You can proceed safely, but always stay alert online.")
+            st.info('''
                      This website is classified as safe due to the absence of phishing indicators such as the use of IP addresses, abnormal URL length, excessive special characters, misleading subdomains, or redirection patterns.
                      The overall feature profile aligns with typical characteristics of legitimate websites.
                 ''')
-            else:
-                st.warning(
-                    "⚠️ This website shows signs of **phishing** behavior. Be cautious and avoid entering any personal information.")
+        else:
+            st.warning(
+                "⚠️ This website shows signs of **phishing** behavior. Be cautious and avoid entering any personal information.")
 
-                st.warning("⚠️ If you are sure this is a phishing website you can add it to the cybersecurity updates on"
-                           "    cybersnitch community or PhishTank to inform other users to stay safe online")
+            st.warning(
+                "⚠️ If you are sure this is a phishing website you can add it to the cybersecurity updates on"
+                "    cybersnitch community or PhishTank to inform other users to stay safe online")
+
+
+
+   
 
 
 
